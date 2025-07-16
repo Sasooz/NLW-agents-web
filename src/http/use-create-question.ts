@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateQuestionRequest } from './types/create-question-resquest'
+import type { CreateQuestionRequest } from './types/create-question-request'
 import type { CreateQuestionResponse } from './types/create-question-response'
 import type { GetRoomQuestionsResponse } from './types/get-room-questions-response'
 
@@ -15,7 +15,7 @@ export function useCreateQuestion(roomId: string) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ data }),
+          body: JSON.stringify(data),
         }
       )
 
@@ -37,7 +37,7 @@ export function useCreateQuestion(roomId: string) {
         question,
         answer: null,
         createdAt: new Date().toISOString(),
-        isGeneratingAnswer: true
+        isGeneratingAnswer: true,
       }
 
       queryClient.setQueryData<GetRoomQuestionsResponse>(
@@ -76,7 +76,7 @@ export function useCreateQuestion(roomId: string) {
       )
     },
 
-    onError(_data, _variables, context) {
+    onError(_error, _variables, context) {
       if (context?.questions) {
         queryClient.setQueryData<GetRoomQuestionsResponse>(
           ['get-questions', roomId],
